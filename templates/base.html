@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="{{ game.lang }}">
+<head>
+  <meta charset="UTF-8" />
+  <title>Hangman</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="logo">Виселица / Hangman</div>
+    <form method="post" action="/set-lang" class="lang-switch">
+      <select name="lang" onchange="this.form.submit()">
+        <option value="ru" {% if game.lang == 'ru' %}selected{% endif %}>Русский</option>
+        <option value="en" {% if game.lang == 'en' %}selected{% endif %}>English</option>
+      </select>
+    </form>
+    <button class="restart" form="restart-form">↺</button>
+  </header>
+  <main class="content">
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

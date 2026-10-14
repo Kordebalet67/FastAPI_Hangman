@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<form id="restart-form" method="post" action="/restart"></form>
+
+<div class="word">
+  {% for ch in mask.split(" ") %}
+    <span class="cell {% if ch != '＿' %}revealed{% endif %}">{{ ch }}</span>
+  {% endfor %}
+</div>
+
+<div class="status">
+  <div>{{ messages["attempts"] }}: {{ attempts_left }}</div>
+  {% if game.status == "won" %}
+    <div class="banner success">{{ messages["won"] }} {{ game.word }}</div>
+  {% elif game.status == "lost" %}
+    <div class="banner danger">{{ messages["lost"] }} {{ game.word }}</div>
+  {% else %}
+    <div class="tip">{{ messages["tip"] }}</div>
+  {% endif %}
+</div>
+
+<div class="keyboard">
+  {% set alphabet = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ' if game.lang == 'ru' else 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' %}
+  <div class="keys">
+    {% for ch in alphabet %}
+      <form method="post" action="/guess" class="key-form">
+        <input type="hidden" name="letter" value="{{ ch }}">
+        <button class="key" type="submit"
+          {% if ch in game.guessed or ch in game.misses or game.status != "playing" %}disabled{% endif %}>
+          {{ ch }}
+        </button>
+      </form>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
